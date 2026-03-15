@@ -4,6 +4,14 @@
   "description": "High-performance React date picker built on the Temporal API. Immutable dates, range selection, accessible.",
   "keywords": ["react", "datepicker", "date-picker", "temporal", "temporal-api", "date-range", "accessible", "a11y"],
   "license": "MIT",
+  "homepage": "https://github.com/PabloViniegra/temporal-react-datepicker#readme",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/PabloViniegra/temporal-react-datepicker.git"
+  },
+  "bugs": {
+    "url": "https://github.com/PabloViniegra/temporal-react-datepicker/issues"
+  },
   "type": "module",
   "main": "./dist/index.umd.cjs",
   "module": "./dist/index.js",
