@@ -18,10 +18,11 @@ export default defineConfig({
       formats: ['es', 'umd']
     },
     rollupOptions: {
-      external: ['react', 'react-dom', '@js-temporal/polyfill'],
+      external: ['react', 'react/jsx-runtime', 'react-dom', '@js-temporal/polyfill'],
       output: {
         globals: {
           react: 'React',
+          'react/jsx-runtime': 'ReactJsxRuntime',
           'react-dom': 'ReactDOM',
           '@js-temporal/polyfill': 'Temporal'
         }
