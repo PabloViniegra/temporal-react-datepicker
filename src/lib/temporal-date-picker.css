@@ -1,0 +1,362 @@
+/* TemporalDatePicker — CSS Custom Properties API
+ *
+ * Default theme: dark (sky blue accent).
+ * Light mode: overridden via @media (prefers-color-scheme: light).
+ *
+ * Consumer overrides (add to your CSS):
+ *   .my-app .temporal-datepicker { --tdp-accent: #10b981; }
+ */
+
+/* ── Default tokens (dark) ─────────────────────────────────── */
+.temporal-datepicker {
+  --tdp-accent:       #38bdf8;
+  --tdp-accent-fg:    #0f172a;
+  --tdp-bg:           #1e293b;
+  --tdp-border:       #334155;
+  --tdp-text:         #e2e8f0;
+  --tdp-text-muted:   #64748b;
+  --tdp-day-hover-bg: rgba(255, 255, 255, 0.06);
+  --tdp-today-text:   #38bdf8;
+  --tdp-today-ring:   #38bdf8;
+  --tdp-selected-bg:  var(--tdp-accent);
+  --tdp-selected-text: var(--tdp-accent-fg);
+
+  /* Range */
+  --tdp-range-bg:               rgba(56, 189, 248, 0.15);
+  --tdp-range-edge-bg:          var(--tdp-accent);
+  --tdp-range-edge-text:        var(--tdp-accent-fg);
+
+  /* Disabled */
+  --tdp-disabled-text:          #334155;
+  --tdp-disabled-bg:            transparent;
+
+  /* Week numbers */
+  --tdp-weeknum-text:           var(--tdp-text-muted);
+
+  /* Panels (month/year selectors) */
+  --tdp-panel-item-hover-bg:          var(--tdp-day-hover-bg);
+  --tdp-panel-item-selected-bg:       var(--tdp-accent);
+  --tdp-panel-item-selected-text:     var(--tdp-accent-fg);
+
+  --tdp-radius:       12px;
+  --tdp-day-radius:   8px;
+  --tdp-width:        100%;
+  --tdp-day-size:     36px;
+  --tdp-shadow:       0 8px 32px rgba(0, 0, 0, 0.4), 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+/* ── Light mode override ────────────────────────────────────── */
+@media (prefers-color-scheme: light) {
+  .temporal-datepicker {
+    --tdp-bg:           #ffffff;
+    --tdp-border:       #e2e8f0;
+    --tdp-text:         #0f172a;
+    --tdp-text-muted:   #94a3b8;
+    --tdp-day-hover-bg: #f1f5f9;
+    --tdp-accent:       #0ea5e9;
+    --tdp-accent-fg:    #ffffff;
+    --tdp-today-text:   #0ea5e9;
+    --tdp-today-ring:   #0ea5e9;
+    --tdp-shadow:       0 4px 24px rgba(0, 0, 0, 0.08), 0 1px 4px rgba(0, 0, 0, 0.06);
+    --tdp-range-bg:     rgba(14, 165, 233, 0.12);
+    --tdp-disabled-text: #cbd5e1;
+  }
+}
+
+/* ── Container ──────────────────────────────────────────────── */
+.temporal-datepicker {
+  width: var(--tdp-width);
+  background: var(--tdp-bg);
+  border: 1px solid var(--tdp-border);
+  border-radius: var(--tdp-radius);
+  padding: 16px;
+  color: var(--tdp-text);
+  font-family: inherit;
+  font-size: 14px;
+  line-height: 1;
+  box-sizing: border-box;
+  box-shadow: var(--tdp-shadow);
+  transition: border-color 0.15s ease;
+}
+
+/* ── Header ─────────────────────────────────────────────────── */
+.tdp-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 14px;
+  gap: 8px;
+}
+
+.tdp-month-label {
+  font-weight: 600;
+  font-size: 13px;
+  color: var(--tdp-text);
+  flex: 1;
+  text-align: center;
+  letter-spacing: 0.015em;
+  text-transform: capitalize;
+}
+
+/* ── Nav buttons ─────────────────────────────────────────────── */
+.tdp-nav {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  border: 1px solid var(--tdp-border);
+  border-radius: calc(var(--tdp-day-radius) - 2px);
+  background: transparent;
+  color: var(--tdp-text-muted);
+  cursor: pointer;
+  font-size: 16px;
+  line-height: 1;
+  transition: background 0.12s ease, color 0.12s ease, border-color 0.12s ease;
+  flex-shrink: 0;
+}
+
+.tdp-nav:hover {
+  background: var(--tdp-day-hover-bg);
+  color: var(--tdp-text);
+  border-color: var(--tdp-text-muted);
+}
+
+.tdp-nav:focus-visible {
+  outline: 2px solid var(--tdp-accent);
+  outline-offset: 2px;
+  border-color: transparent;
+}
+
+/* ── Calendar table ─────────────────────────────────────────── */
+.tdp-grid {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: fixed;
+}
+
+/* Day-of-week headers */
+.tdp-weekday {
+  height: 28px;
+  font-size: 10px;
+  font-weight: 600;
+  text-align: center;
+  color: var(--tdp-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  padding: 0 0 4px;
+}
+
+/* Grid cells */
+.tdp-cell {
+  padding: 2px;
+  text-align: center;
+}
+
+/* ── Day buttons ─────────────────────────────────────────────── */
+.tdp-day {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--tdp-day-size);
+  height: var(--tdp-day-size);
+  padding: 0;
+  border: none;
+  border-radius: var(--tdp-day-radius);
+  background: transparent;
+  color: var(--tdp-text);
+  font-size: 13px;
+  font-family: inherit;
+  cursor: pointer;
+  transition: background 0.1s ease, color 0.1s ease, transform 0.1s ease;
+  position: relative;
+}
+
+.tdp-day:hover:not(:disabled) {
+  background: var(--tdp-day-hover-bg);
+  transform: scale(1.08);
+}
+
+.tdp-day:focus-visible {
+  outline: 2px solid var(--tdp-accent);
+  outline-offset: 1px;
+}
+
+/* ── Today indicator ─────────────────────────────────────────── */
+.tdp-day--today {
+  color: var(--tdp-today-text);
+  font-weight: 700;
+}
+
+.tdp-day--today::after {
+  content: '';
+  position: absolute;
+  bottom: 4px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 3px;
+  height: 3px;
+  border-radius: 50%;
+  background: var(--tdp-today-ring);
+}
+
+/* ── Selected ────────────────────────────────────────────────── */
+.tdp-day--selected {
+  background: var(--tdp-selected-bg);
+  color: var(--tdp-selected-text);
+  font-weight: 600;
+}
+
+.tdp-day--selected:hover {
+  background: var(--tdp-selected-bg);
+  opacity: 0.88;
+  transform: scale(1.08);
+}
+
+.tdp-day--selected.tdp-day--today::after {
+  background: var(--tdp-selected-text);
+  opacity: 0.5;
+}
+
+/* ── Range selection ─────────────────────────────────────────── */
+.tdp-day--range-start,
+.tdp-day--range-end {
+  background: var(--tdp-range-edge-bg);
+  color: var(--tdp-range-edge-text);
+  font-weight: 600;
+}
+
+.tdp-day--range-start:hover:not(:disabled),
+.tdp-day--range-end:hover:not(:disabled) {
+  background: var(--tdp-range-edge-bg);
+  opacity: 0.88;
+  transform: scale(1.08);
+}
+
+.tdp-day--in-range {
+  background: var(--tdp-range-bg);
+  border-radius: 0;
+  color: var(--tdp-text);
+}
+
+.tdp-day--in-range:hover:not(:disabled) {
+  background: var(--tdp-range-bg);
+  transform: none;
+}
+
+/* ── Disabled ────────────────────────────────────────────────── */
+.tdp-day:disabled,
+.tdp-day--disabled {
+  color: var(--tdp-disabled-text);
+  background: var(--tdp-disabled-bg);
+  cursor: not-allowed;
+  opacity: 0.4;
+  transform: none;
+}
+
+/* ── Week numbers ────────────────────────────────────────────── */
+.tdp-weeknum-header,
+.tdp-weeknum {
+  color: var(--tdp-weeknum-text);
+  font-size: 10px;
+  font-weight: 500;
+  text-align: right;
+  padding-right: 6px;
+  width: 22px;
+  user-select: none;
+  pointer-events: none;
+}
+
+/* ── Month / Year header buttons ─────────────────────────────── */
+.tdp-month-btn,
+.tdp-year-btn {
+  background: transparent;
+  border: none;
+  color: var(--tdp-text);
+  font-weight: 600;
+  font-size: 13px;
+  font-family: inherit;
+  cursor: pointer;
+  padding: 2px 4px;
+  border-radius: 4px;
+  line-height: 1;
+  transition: background 0.12s ease, color 0.12s ease;
+  text-transform: capitalize;
+  letter-spacing: 0.015em;
+}
+
+.tdp-month-btn:hover,
+.tdp-year-btn:hover {
+  background: var(--tdp-day-hover-bg);
+  color: var(--tdp-text);
+}
+
+.tdp-month-btn:focus-visible,
+.tdp-year-btn:focus-visible {
+  outline: 2px solid var(--tdp-accent);
+  outline-offset: 2px;
+}
+
+/* ── Screen-reader only ──────────────────────────────────────── */
+.tdp-sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+/* ── Panels (month/year selectors) ──────────────────────────── */
+.tdp-panel-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  margin-top: 8px;
+}
+
+.tdp-panel-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2px;
+}
+
+.tdp-panel-item {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  padding: 9px 4px;
+  border: none;
+  border-radius: var(--tdp-day-radius);
+  background: transparent;
+  color: var(--tdp-text);
+  font-size: 13px;
+  font-family: inherit;
+  cursor: pointer;
+  transition: background 0.1s ease, color 0.1s ease;
+}
+
+.tdp-panel-item:hover {
+  background: var(--tdp-panel-item-hover-bg);
+}
+
+.tdp-panel-item:focus-visible {
+  outline: 2px solid var(--tdp-accent);
+  outline-offset: 2px;
+}
+
+.tdp-panel-item--selected {
+  background: var(--tdp-panel-item-selected-bg);
+  color: var(--tdp-panel-item-selected-text);
+  font-weight: 600;
+}
+
+.tdp-panel-item--selected:hover {
+  background: var(--tdp-panel-item-selected-bg);
+  opacity: 0.88;
+}
