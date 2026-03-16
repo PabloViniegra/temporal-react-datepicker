@@ -24,6 +24,10 @@ dist-ssr
 *.sw?
 
 
+# Test output
+coverage/
+*.lcov
+
 # AI
 .claude/*
 CLAUDE.md
