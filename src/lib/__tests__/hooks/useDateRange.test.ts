@@ -67,7 +67,7 @@ describe('useDateRange', () => {
       expect(onChange).not.toHaveBeenCalled()
     })
 
-    it('rejects range that spans a disabled date', () => {
+    it('allows range that spans a disabled date (disabled dates are skipped by the consumer)', () => {
       const isDisabled = (date: Temporal.PlainDate) =>
         Temporal.PlainDate.compare(date, d('2024-03-15')) === 0
       const { result } = renderHook(() => useDateRange(isDisabled))
@@ -79,7 +79,12 @@ describe('useDateRange', () => {
           onChange,
         )
       })
-      expect(onChange).not.toHaveBeenCalled()
+      expect(onChange).toHaveBeenCalledWith(
+        expect.objectContaining({
+          start: expectDate(2024, 3, 10),
+          end: expectDate(2024, 3, 20),
+        }),
+      )
     })
 
     it('clicking when range is complete starts a new range', () => {
@@ -169,31 +174,29 @@ describe('useDateRange', () => {
       expect(state.isPreview).toBe(true)
     })
 
-    it('clipHoverToDisabled: clips hover to last non-disabled date (forward)', () => {
-      // disabled on day 18 — hover at 20 should be clipped to 17
+    it('hover preview shows full range through disabled dates (no clipping)', () => {
+      // disabled on day 18 — hover at 20 should still preview up to 20
       const isDisabled = (date: Temporal.PlainDate) => date.day === 18
       const { result } = renderHook(() => useDateRange(isDisabled))
       act(() => result.current.setHoverDate(d('2024-03-20')))
 
       const value = { start: d('2024-03-15'), end: null }
-      expect(result.current.getDayRangeState(d('2024-03-17'), value).isRangeEnd).toBe(true)
-      expect(result.current.getDayRangeState(d('2024-03-19'), value).inRange).toBe(false)
+      expect(result.current.getDayRangeState(d('2024-03-20'), value).isRangeEnd).toBe(true)
+      expect(result.current.getDayRangeState(d('2024-03-19'), value).inRange).toBe(true)
     })
 
-    it('clipHoverToDisabled: clips hover backward when hovering before start', () => {
-      // disabled on day 12 — hover at 05 should be clipped to 13
+    it('hover preview shows full range backward through disabled dates (no clipping)', () => {
+      // disabled on day 12 — hover at 05 should preview down to 05
       const isDisabled = (date: Temporal.PlainDate) => date.day === 12
       const { result } = renderHook(() => useDateRange(isDisabled))
       act(() => result.current.setHoverDate(d('2024-03-05')))
 
       const value = { start: d('2024-03-15'), end: null }
-      // effectiveHover=13 → previewStart=13, previewEnd=15
-      expect(result.current.getDayRangeState(d('2024-03-13'), value).isRangeStart).toBe(true)
-      expect(result.current.getDayRangeState(d('2024-03-12'), value).inRange).toBe(false)
+      expect(result.current.getDayRangeState(d('2024-03-05'), value).isRangeStart).toBe(true)
+      expect(result.current.getDayRangeState(d('2024-03-12'), value).inRange).toBe(true)
     })
 
-    it('clipHoverToDisabled: reaches hover exactly when no disabled date blocks the path', () => {
-      // disabled far away — hover at 20 should reach 20
+    it('hover preview reaches hovered date when no disabled dates in path', () => {
       const isDisabled = (date: Temporal.PlainDate) => date.day === 28
       const { result } = renderHook(() => useDateRange(isDisabled))
       act(() => result.current.setHoverDate(d('2024-03-20')))

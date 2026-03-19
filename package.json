@@ -1,6 +1,6 @@
 {
   "name": "temporal-react-datepicker",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "High-performance React date picker built on the Temporal API. Immutable dates, range selection, accessible.",
   "keywords": [
     "react",

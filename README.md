@@ -167,7 +167,7 @@ const EVENTS = new Set(['2026-03-10', '2026-03-18', '2026-03-25'])
 
 ## Disabled dates
 
-Return `true` from `isDateDisabled` to block a date. Disabled days are not clickable, not keyboard-focusable, and in range mode they block the range from crossing them.
+Return `true` from `isDateDisabled` to block a date. Disabled days are not clickable and not keyboard-focusable. In range mode, disabled dates inside the selected range are skipped — they do not prevent the range from spanning across them.
 
 ```tsx
 // Weekends only
@@ -220,7 +220,7 @@ const HOLIDAYS = new Set(['2026-01-01', '2026-12-25', '2026-12-26'])
 ```
 
 ```tsx
-// Range mode with disabled dates — crossing a disabled date is blocked
+// Range mode with disabled dates — disabled dates inside the range are skipped
 <TemporalDatePicker
   mode="range"
   value={range}
@@ -434,6 +434,16 @@ pnpm build         # build library to /dist
 pnpm type-check    # TypeScript compiler check
 pnpm lint          # ESLint
 ```
+
+## Changelog
+
+### 1.0.1
+
+- **Bug fix:** In range mode, selecting an end date beyond disabled dates now works correctly. Previously, any disabled date between the range start and end would block the selection entirely. Now the range is confirmed with the chosen endpoints and disabled dates within the span are skipped. The hover preview also shows the full range without clipping at disabled dates.
+
+### 1.0.0
+
+- Initial release.
 
 ## License
 
