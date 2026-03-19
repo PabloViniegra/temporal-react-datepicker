@@ -1,6 +1,10 @@
 # temporal-react-datepicker
 
+[![Documentation](https://img.shields.io/badge/docs-live-blue?style=flat-square)](https://pabloviniegra.github.io/temporal-react-datepicker-docs/)
+
 A high-performance, accessible React date picker built on the [JavaScript Temporal API](https://tc39.es/proposal-temporal/docs/). Uses `Temporal.PlainDate` for all date logic — immutable, correct calendar arithmetic, no legacy `Date` object.
+
+**[Documentation & live examples →](https://pabloviniegra.github.io/temporal-react-datepicker-docs/)**
 
 ## Requirements
 
