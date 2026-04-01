@@ -1,0 +1,192 @@
+/* ── DatePickerInput — CSS ───────────────────────────────────────────────────
+   Inherits --tdp-* design tokens from temporal-date-picker.css.
+   All classes use the tdp-input__ prefix.
+   ──────────────────────────────────────────────────────────────────────────── */
+
+.tdp-input {
+  position: relative;
+  display: inline-block;
+}
+
+/* ── Input wrapper ─────────────────────────────────────────────────────────── */
+
+.tdp-input__wrapper {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 8px 10px;
+  border: 1px solid var(--tdp-border, #3a3f4b);
+  border-radius: var(--tdp-day-radius, 8px);
+  background: var(--tdp-bg, #1e2330);
+  color: var(--tdp-text, #e2e8f0);
+  cursor: text;
+  min-width: 160px;
+  font-size: 14px;
+  font-family: inherit;
+  transition: border-color 0.15s ease;
+  user-select: none;
+}
+
+.tdp-input__wrapper:focus-within {
+  border-color: var(--tdp-accent, #3b82f6);
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--tdp-accent, #3b82f6) 25%, transparent);
+}
+
+.tdp-input__wrapper--disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+/* ── Segments ──────────────────────────────────────────────────────────────── */
+
+.tdp-input__segments {
+  display: inline-flex;
+  align-items: center;
+  gap: 1px;
+}
+
+.tdp-input__segment {
+  padding: 1px 3px;
+  border-radius: 3px;
+  min-width: 1.6em;
+  text-align: center;
+  outline: none;
+  color: var(--tdp-text, #e2e8f0);
+  cursor: pointer;
+}
+
+.tdp-input__segment:focus {
+  background: var(--tdp-accent, #3b82f6);
+  color: var(--tdp-accent-fg, #ffffff);
+}
+
+.tdp-input__segment--empty {
+  color: var(--tdp-text-muted, #64748b);
+}
+
+.tdp-input__segment--year {
+  min-width: 2.8em;
+}
+
+.tdp-input__separator {
+  color: var(--tdp-text-muted, #64748b);
+  pointer-events: none;
+  padding: 0 1px;
+}
+
+/* Range arrow between start and end groups */
+.tdp-input__range-arrow {
+  color: var(--tdp-text-muted, #64748b);
+  padding: 0 6px;
+  pointer-events: none;
+  flex-shrink: 0;
+}
+
+/* ── Icon trigger ──────────────────────────────────────────────────────────── */
+
+.tdp-input__icon-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2px;
+  border: none;
+  background: none;
+  color: var(--tdp-text-muted, #64748b);
+  cursor: pointer;
+  border-radius: 4px;
+  flex-shrink: 0;
+  line-height: 0;
+  transition: color 0.15s ease;
+}
+
+.tdp-input__icon-btn:hover {
+  color: var(--tdp-accent, #3b82f6);
+}
+
+.tdp-input__icon-btn:focus-visible {
+  outline: 2px solid var(--tdp-accent, #3b82f6);
+  outline-offset: 1px;
+}
+
+/* ── Clear button ──────────────────────────────────────────────────────────── */
+
+.tdp-input__clear {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  border: none;
+  background: none;
+  color: var(--tdp-text-muted, #64748b);
+  cursor: pointer;
+  border-radius: 50%;
+  flex-shrink: 0;
+  font-size: 14px;
+  line-height: 1;
+  padding: 0;
+  transition: color 0.15s ease, background 0.15s ease;
+}
+
+.tdp-input__clear:hover {
+  color: var(--tdp-text, #e2e8f0);
+  background: var(--tdp-day-hover-bg, #2d3748);
+}
+
+.tdp-input__clear:focus-visible {
+  outline: 2px solid var(--tdp-accent, #3b82f6);
+  outline-offset: 1px;
+}
+
+/* ── Popover ───────────────────────────────────────────────────────────────── */
+
+.tdp-input__popover {
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0;
+  z-index: 100;
+  outline: none;
+}
+
+/* ── Spacer (pushes icon to the right) ────────────────────────────────────── */
+
+.tdp-input__spacer {
+  flex: 1;
+}
+
+/* ── Light mode overrides ──────────────────────────────────────────────────── */
+
+@media (prefers-color-scheme: light) {
+  .tdp-input__wrapper {
+    background: #ffffff;
+    border-color: #cbd5e1;
+    color: #0f172a;
+  }
+
+  .tdp-input__segment {
+    color: #0f172a;
+  }
+
+  .tdp-input__segment--empty {
+    color: #94a3b8;
+  }
+
+  .tdp-input__segment:focus {
+    background: var(--tdp-accent, #3b82f6);
+    color: #ffffff;
+  }
+
+  .tdp-input__separator,
+  .tdp-input__range-arrow {
+    color: #94a3b8;
+  }
+
+  .tdp-input__icon-btn {
+    color: #94a3b8;
+  }
+
+  .tdp-input__clear {
+    color: #94a3b8;
+  }
+}

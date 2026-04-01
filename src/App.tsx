@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { Temporal } from '@js-temporal/polyfill'
-import { TemporalDatePicker } from './lib'
+import { TemporalDatePicker, DatePickerInput } from './lib'
 import type { DateRange } from './lib'
 import './App.css'
 
@@ -26,6 +26,8 @@ function App() {
   const [single, setSingle] = useState<Temporal.PlainDate | undefined>(undefined)
   const [range, setRange] = useState<DateRange | undefined>(undefined)
   const [clearable, setClearable] = useState<Temporal.PlainDate | undefined>(undefined)
+  const [inputSingle, setInputSingle] = useState<Temporal.PlainDate | undefined>(undefined)
+  const [inputRange, setInputRange] = useState<DateRange | undefined>(undefined)
 
   return (
     <div className="demo-root">
@@ -102,6 +104,66 @@ function App() {
           </div>
 
         </div>
+
+        {/* DatePickerInput section */}
+        <div style={{ marginTop: '48px' }}>
+          <h2 style={{ textAlign: 'center', marginBottom: '8px', fontSize: '1.25rem', color: 'var(--accent)' }}>
+            DatePickerInput
+          </h2>
+          <p style={{ textAlign: 'center', marginBottom: '24px', color: '#94a3b8', fontSize: '0.9rem' }}>
+            Segmented input field — locale-aware, popover calendar
+          </p>
+          <div className="demo-grid">
+
+            <div className="demo-card">
+              <div className="demo-card-label">Single — input field</div>
+              <DatePickerInput
+                clearable
+                value={inputSingle}
+                onChange={setInputSingle}
+                locale={locale}
+              />
+              <div className="demo-date-output" aria-live="polite">
+                {inputSingle
+                  ? <span className="demo-date-value">{formatDate(inputSingle, locale)}</span>
+                  : <span className="demo-date-hint">← type or pick</span>
+                }
+              </div>
+            </div>
+
+            <div className="demo-card">
+              <div className="demo-card-label">Range — two inputs</div>
+              <DatePickerInput
+                mode="range"
+                clearable
+                value={inputRange}
+                onChange={setInputRange}
+                locale={locale}
+              />
+              <div className="demo-date-output" aria-live="polite">
+                {inputRange
+                  ? <span className="demo-date-value">{formatRange(inputRange, locale)}</span>
+                  : <span className="demo-date-hint">← pick start date</span>
+                }
+              </div>
+            </div>
+
+            <div className="demo-card">
+              <div className="demo-card-label">Icon left</div>
+              <DatePickerInput
+                value={inputSingle}
+                onChange={setInputSingle}
+                locale={locale}
+                iconPosition="left"
+              />
+              <div className="demo-date-output" aria-live="polite">
+                <span className="demo-date-hint">iconPosition="left"</span>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
       </main>
 
       {/* Footer with code snippet */}
