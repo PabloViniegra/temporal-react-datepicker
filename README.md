@@ -21,6 +21,8 @@ pnpm add temporal-react-datepicker @js-temporal/polyfill
 
 ## Basic usage
 
+### TemporalDatePicker — standalone calendar
+
 ```tsx
 import { useState } from 'react'
 import { Temporal } from '@js-temporal/polyfill'
@@ -33,6 +35,47 @@ function App() {
 }
 ```
 
+### DatePickerInput — form field (new in 1.1.0)
+
+A locale-aware segmented input (day / month / year) with a popover calendar. The segment order adapts automatically to the user's locale (`es-ES` → `dd/mm/yyyy`, `en-US` → `mm/dd/yyyy`, `ja-JP` → `yyyy/mm/dd`).
+
+```tsx
+import { DatePickerInput } from 'temporal-react-datepicker'
+
+function App() {
+  const [date, setDate] = useState<Temporal.PlainDate | undefined>(undefined)
+
+  return <DatePickerInput clearable value={date} onChange={setDate} />
+}
+```
+
+#### DatePickerInput props
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `mode` | `'single' \| 'range'` | `'single'` | Selection mode. |
+| `value` | `Temporal.PlainDate \| DateRange \| undefined` | — | Controlled value. |
+| `onChange` | `(date) => void` | — | Called when a date or complete range is selected. |
+| `clearable` | `boolean` | `false` | Show a `×` button to reset the value. |
+| `icon` | `ReactNode` | `<CalendarIcon />` | Replace the calendar icon. |
+| `iconPosition` | `'left' \| 'right'` | `'right'` | Position of the icon relative to the segments. |
+| `disabled` | `boolean` | `false` | Disable all interaction. |
+| `locale` | `string` | `navigator.language` | Controls segment order and separator. |
+| `isDateDisabled` | `(date: Temporal.PlainDate) => boolean` | — | Disable specific dates in the popover. |
+| `labels` | `Partial<Labels>` | English | Override any UI string. |
+| `className` | `string` | `''` | Additional CSS class on the root. |
+
+#### DatePickerInput keyboard interaction
+
+| Key | Action |
+|---|---|
+| `↑` / `↓` | Increment / decrement the active segment (day and month wrap). |
+| `Tab` / `Shift+Tab` | Move to the next / previous segment. |
+| `0–9` | Type a value directly, auto-advances when unambiguous. |
+| `Backspace` | Clear the active segment. |
+| `Enter` / `Space` | Open the calendar popover. |
+| `Escape` | Close the calendar popover. |
+
 ## Date range selection
 
 ```tsx
@@ -40,17 +83,16 @@ import type { DateRange } from 'temporal-react-datepicker'
 
 const [range, setRange] = useState<DateRange | undefined>(undefined)
 
-<TemporalDatePicker
-  mode="range"
-  clearable
-  value={range}
-  onChange={setRange}
-/>
+// Standalone calendar
+<TemporalDatePicker mode="range" clearable value={range} onChange={setRange} />
+
+// Input field
+<DatePickerInput mode="range" clearable value={range} onChange={setRange} />
 ```
 
-`DateRange` is `{ start: Temporal.PlainDate; end: Temporal.PlainDate | null }`. After the first click `end` is `null`; after the second click both dates are set.
+`DateRange` is `{ start: Temporal.PlainDate; end: Temporal.PlainDate | null }`. After the first click `end` is `null`; after the second click both dates are set. `DatePickerInput` calls `onChange` only when the range is complete.
 
-## Props
+## TemporalDatePicker props
 
 The component uses a discriminated union — the available props depend on `mode` and `clearable`.
 
@@ -440,6 +482,11 @@ pnpm lint          # ESLint
 ```
 
 ## Changelog
+
+### 1.1.0
+
+- **New component:** `DatePickerInput` — a form-ready segmented date input (day/month/year) with a popover calendar. Supports single and range mode, locale-aware format order, custom icon, clearable, and full keyboard accessibility.
+- **New export:** `CalendarIcon` — the default SVG calendar icon, re-exported for custom use.
 
 ### 1.0.1
 
